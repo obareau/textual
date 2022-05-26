@@ -25,13 +25,15 @@ from textual.geometry import Size, Region
 
 _SYNC_START_SEQUENCE = TERMINAL_MODES_ANSI_SEQUENCES["sync_start"]
 
+_DEFAULT_SIZE = Size(20, 10)
+
 
 class AppTest(App):
     def __init__(
         self,
         *,
         test_name: str,
-        size: Size,
+        size: Size = _DEFAULT_SIZE,
         log_verbosity: int = 2,
     ):
         # Tests will log in "/tests/test.[test name].log":
@@ -103,7 +105,6 @@ class AppTest(App):
                 await self.force_full_screen_update()
 
             # End of simulated time: we just shut down ourselves:
-            assert not run_task.done()
             await self.shutdown()
 
         return get_running_state_context_manager()
