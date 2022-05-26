@@ -20,6 +20,17 @@ if TYPE_CHECKING:
 
 @rich.repr.auto
 class Event(Message):
+    __allowed_attributes_for_actions__ = (
+        "Self",  # Allow access to the event object itself, via `"$event"` expressions
+        "sender",  # allows `"$event.sender"` usage in action expressions
+        "name",  # etc.
+        "time",
+        "bubble",
+        "verbosity",
+        "system",
+        "is_forwarded",
+    )
+
     def __rich_repr__(self) -> rich.repr.Result:
         return
         yield
@@ -88,6 +99,11 @@ class Resize(Event, verbosity=2, bubble=False):
     """Sent when the app or widget has been resized."""
 
     __slots__ = ["size"]
+    __allowed_attributes_for_actions__ = (
+        *Event.__allowed_attributes_for_actions__,
+        "size",
+    )
+
     size: Size
 
     def __init__(
@@ -146,6 +162,11 @@ class MouseCapture(Event, bubble=False):
 
     """
 
+    __allowed_attributes_for_actions__ = (
+        *Event.__allowed_attributes_for_actions__,
+        "mouse_position",
+    )
+
     def __init__(self, sender: MessageTarget, mouse_position: Offset) -> None:
         """
 
@@ -163,6 +184,11 @@ class MouseCapture(Event, bubble=False):
 @rich.repr.auto
 class MouseRelease(Event, bubble=False):
     """Mouse has been released."""
+
+    __allowed_attributes_for_actions__ = (
+        *Event.__allowed_attributes_for_actions__,
+        "mouse_position",
+    )
 
     def __init__(self, sender: MessageTarget, mouse_position: Offset) -> None:
         """
@@ -186,6 +212,10 @@ class Key(InputEvent):
     """Sent when the user hits a key on the keyboard"""
 
     __slots__ = ["key"]
+    __allowed_attributes_for_actions__ = (
+        *Event.__allowed_attributes_for_actions__,
+        "key",
+    )
 
     def __init__(self, sender: MessageTarget, key: str) -> None:
         """
@@ -228,6 +258,10 @@ class MouseEvent(InputEvent, bubble=True, verbosity=2):
         "screen_y",
         "_style",
     ]
+    __allowed_attributes_for_actions__ = (
+        *Event.__allowed_attributes_for_actions__,
+        *__slots__,
+    )
 
     def __init__(
         self,
