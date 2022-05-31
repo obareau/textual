@@ -131,8 +131,7 @@ def _set_console_mode(file: IO, mode: int) -> bool:
         bool: True on success, otherwise False.
     """
     windows_filehandle = msvcrt.get_osfhandle(file.fileno())
-    success = KERNEL32.SetConsoleMode(windows_filehandle, mode)
-    return success
+    return KERNEL32.SetConsoleMode(windows_filehandle, mode)
 
 
 def _get_console_mode(file: IO) -> int:
@@ -198,10 +197,7 @@ def _wait_for_handles(handles: List[HANDLE], timeout: int = -1) -> Optional[HAND
         len(handle_array), handle_array, BOOL(False), DWORD(timeout)
     )
 
-    if ret == WAIT_TIMEOUT:
-        return None
-    else:
-        return handles[ret]
+    return None if ret == WAIT_TIMEOUT else handles[ret]
 
 
 class EventMonitor(threading.Thread):

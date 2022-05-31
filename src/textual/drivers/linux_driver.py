@@ -184,10 +184,7 @@ class LinuxDriver(Driver):
 
         def more_data() -> bool:
             """Check if there is more data to parse."""
-            for key, events in selector.select(0.01):
-                if events:
-                    return True
-            return False
+            return any(events for key, events in selector.select(0.01))
 
         parser = XTermParser(self._target, more_data)
 

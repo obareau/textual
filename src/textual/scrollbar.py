@@ -81,15 +81,16 @@ class ScrollBarRender:
     ) -> Segments:
 
         if vertical:
-            if ascii_only:
-                bars = ["|", "|", "|", "|", "|", "|", "|", "|"]
-            else:
-                bars = ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+            bars = (
+                ["|", "|", "|", "|", "|", "|", "|", "|"]
+                if ascii_only
+                else ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+            )
+
+        elif ascii_only:
+            bars = ["-", "-", "-", "-", "-", "-", "-", "-"]
         else:
-            if ascii_only:
-                bars = ["-", "-", "-", "-", "-", "-", "-", "-"]
-            else:
-                bars = ["█", "▉", "▊", "▋", "▌", "▍", "▎", "▏"]
+            bars = ["█", "▉", "▊", "▋", "▌", "▍", "▎", "▏"]
 
         back = back_color
         bar = bar_color
@@ -116,7 +117,7 @@ class ScrollBarRender:
             upper_back_segment = Segment(blank, _Style(bgcolor=back, meta=upper))
             lower_back_segment = Segment(blank, _Style(bgcolor=back, meta=lower))
 
-            segments = [upper_back_segment] * int(size)
+            segments = [upper_back_segment] * size
             segments[end_index:] = [lower_back_segment] * (size - end_index)
 
             segments[start_index:end_index] = [
@@ -138,7 +139,7 @@ class ScrollBarRender:
                     else _Style(bgcolor=back, color=bar, meta=foreground_meta),
                 )
         else:
-            segments = [_Segment(blank)] * int(size)
+            segments = [_Segment(blank)] * size
         if vertical:
             return Segments(segments, new_lines=True)
         else:
@@ -160,7 +161,7 @@ class ScrollBarRender:
 
         _style = console.get_style(self.style)
 
-        bar = self.render_bar(
+        yield self.render_bar(
             size=size,
             window_size=self.window_size,
             virtual_size=self.virtual_size,
@@ -170,7 +171,6 @@ class ScrollBarRender:
             back_color=_style.bgcolor or Color.parse("#555555"),
             bar_color=_style.color or Color.parse("bright_magenta"),
         )
-        yield bar
 
 
 @rich.repr.auto

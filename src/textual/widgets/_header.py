@@ -57,8 +57,7 @@ class Header(Widget):
             "🐞", self.full_title, self.get_clock() if self.clock else ""
         )
         header: RenderableType
-        header = Panel(header_table, style=self.style) if self.tall else header_table
-        return header
+        return Panel(header_table, style=self.style) if self.tall else header_table
 
     async def on_mount(self, event: events.Mount) -> None:
         self.set_interval(1.0, callback=self.refresh)

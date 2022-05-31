@@ -249,9 +249,7 @@ class Layout(ABC):
 
     def _get_renders(self, console: Console) -> Iterable[tuple[Region, Region, Lines]]:
         _rich_traceback_guard = True
-        layout_map = self.map
-
-        if layout_map:
+        if layout_map := self.map:
             widget_regions = sorted(
                 (
                     (widget, region, order, clip)
@@ -385,5 +383,4 @@ class Layout(ABC):
 
         update_region = region.intersection(clip)
         update_lines = self.render(console, crop=update_region).lines
-        update = LayoutUpdate(update_lines, update_region)
-        return update
+        return LayoutUpdate(update_lines, update_region)

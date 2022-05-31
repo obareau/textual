@@ -24,8 +24,7 @@ class Bindings:
 
     @property
     def shown_keys(self) -> list[Binding]:
-        keys = [binding for binding in self.keys.values() if binding.show]
-        return keys
+        return [binding for binding in self.keys.values() if binding.show]
 
     def bind(
         self,

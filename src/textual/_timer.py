@@ -98,8 +98,7 @@ class Timer:
                 if self._skip and next_timer < monotonic():
                     count += 1
                     continue
-                wait_time = max(0, next_timer - monotonic())
-                if wait_time:
+                if wait_time := max(0, next_timer - monotonic()):
                     await sleep(wait_time)
                 event = events.Timer(
                     self.sender, timer=self, count=count, callback=self._callback

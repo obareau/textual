@@ -121,12 +121,11 @@ class App(MessagePump):
         if WINDOWS:
             from .drivers.windows_driver import WindowsDriver
 
-            driver_class = WindowsDriver
+            return WindowsDriver
         else:
             from .drivers.linux_driver import LinuxDriver
 
-            driver_class = LinuxDriver
-        return driver_class
+            return LinuxDriver
 
     def __rich_repr__(self) -> rich.repr.Result:
         yield "title", self.title
@@ -151,7 +150,7 @@ class App(MessagePump):
         """
         try:
             if self.log_file and verbosity <= self.log_verbosity:
-                output = f" ".join(str(arg) for arg in args)
+                output = " ".join((str(arg) for arg in args))
                 if kwargs:
                     key_values = " ".join(
                         f"{key}={value}" for key, value in kwargs.items()
@@ -240,15 +239,14 @@ class App(MessagePump):
                     await self.mouse_over.post_message(events.Leave(self))
                 finally:
                     self.mouse_over = None
-        else:
-            if self.mouse_over != widget:
-                try:
-                    if self.mouse_over is not None:
-                        await self.mouse_over.forward_event(events.Leave(self))
-                    if widget is not None:
-                        await widget.forward_event(events.Enter(self))
-                finally:
-                    self.mouse_over = widget
+        elif self.mouse_over != widget:
+            try:
+                if self.mouse_over is not None:
+                    await self.mouse_over.forward_event(events.Leave(self))
+                if widget is not None:
+                    await widget.forward_event(events.Enter(self))
+            finally:
+                self.mouse_over = widget
 
     async def capture_mouse(self, widget: Widget | None) -> None:
         """Send all mouse events to the given widget, disable mouse capture.
