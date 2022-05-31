@@ -66,7 +66,6 @@ class View(Widget):
         self, console: Console, options: ConsoleOptions
     ) -> RenderResult:
         return
-        yield
 
     def __rich_repr__(self) -> rich.repr.Result:
         yield "name", self.name

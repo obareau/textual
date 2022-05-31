@@ -113,8 +113,7 @@ class Widget(MessagePump):
         yield "name", self.name
 
     def __rich__(self) -> RenderableType:
-        renderable = self.render_styled()
-        return renderable
+        return self.render_styled()
 
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -> None:
         watch(self, attribute_name, callback)
@@ -175,10 +174,9 @@ class Widget(MessagePump):
         mt, mr, mb, bl = self.margin or (0, 0, 0, 0)
         pt, pr, pb, pl = self.padding or (0, 0, 0, 0)
         border = 1 if self.border else 0
-        gutter = Spacing(
+        return Spacing(
             mt + pt + border, mr + pr + border, mb + pb + border, bl + pl + border
         )
-        return gutter
 
     def _update_size(self, size: Size) -> None:
         self._size = size
@@ -201,8 +199,7 @@ class Widget(MessagePump):
         if self.render_cache is None:
             self.render_lines()
         assert self.render_cache is not None
-        lines = self.render_cache.lines
-        return lines
+        return self.render_cache.lines
 
     def clear_render_cache(self) -> None:
         self.render_cache = None

@@ -36,10 +36,7 @@ def _in_out_back(x: float) -> float:
 def _in_elastic(x: float) -> float:
     """https://easings.net/#easeInElastic"""
     c = 2 * pi / 3
-    if 0 < x < 1:
-        return -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c)
-    else:
-        return x  # x in (0, 1)
+    return -pow(2, 10 * x - 10) * sin((x * 10 - 10.75) * c) if 0 < x < 1 else x
 
 
 def _in_out_elastic(x: float) -> float:
@@ -56,10 +53,7 @@ def _in_out_elastic(x: float) -> float:
 def _out_elastic(x: float) -> float:
     """https://easings.net/#easeInOutElastic"""
     c = 2 * pi / 3
-    if 0 < x < 1:
-        return pow(2, -10 * x) * sin((x * 10 - 0.75) * c) + 1
-    else:
-        return x  # x in (0, 1)
+    return pow(2, -10 * x) * sin((x * 10 - 0.75) * c) + 1 if 0 < x < 1 else x
 
 
 def _out_bounce(x: float) -> float:

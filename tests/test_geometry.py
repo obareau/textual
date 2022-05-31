@@ -72,7 +72,7 @@ def test_point_add():
     assert Offset(1, 1) + Offset(2, 2) == Offset(3, 3)
     assert Offset(1, 2) + Offset(3, 4) == Offset(4, 6)
     with pytest.raises(TypeError):
-        Offset(1, 1) + "foo"
+        f"{Offset(1, 1)}foo"
 
 
 def test_point_sub():
@@ -114,7 +114,7 @@ def test_region_origin():
 def test_region_add():
     assert Region(1, 2, 3, 4) + (10, 20) == Region(11, 22, 3, 4)
     with pytest.raises(TypeError):
-        Region(1, 2, 3, 4) + "foo"
+        f"{Region(1, 2, 3, 4)}foo"
 
 
 def test_region_sub():

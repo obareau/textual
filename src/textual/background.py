@@ -17,8 +17,7 @@ class BackgroundRenderable:
         height = options.height or console.height
         style = console.get_style(self.style)
         blank_segment = Segment(" " * width, style)
-        lines = SegmentLines([[blank_segment]] * height, new_lines=True)
-        yield lines
+        yield SegmentLines([[blank_segment]] * height, new_lines=True)
 
 
 class Background(Widget):

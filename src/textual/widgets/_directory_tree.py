@@ -116,12 +116,12 @@ class DirectoryTree(TreeControl[DirEntry]):
         dir_entry = message.node.data
         if not dir_entry.is_dir:
             await self.emit(FileClick(self, dir_entry.path))
+        elif message.node.loaded:
+            await message.node.toggle()
+
         else:
-            if not message.node.loaded:
-                await self.load_directory(message.node)
-                await message.node.expand()
-            else:
-                await message.node.toggle()
+            await self.load_directory(message.node)
+            await message.node.expand()
 
 
 if __name__ == "__main__":

@@ -21,7 +21,6 @@ if TYPE_CHECKING:
 class Event(Message):
     def __rich_repr__(self) -> rich.repr.Result:
         return
-        yield
 
     def __init_subclass__(cls, bubble: bool = True, verbosity: int = 1) -> None:
         super().__init_subclass__(bubble=bubble, verbosity=verbosity)
@@ -263,7 +262,7 @@ class MouseEvent(InputEvent, bubble=True):
 
     @classmethod
     def from_event(cls: Type[MouseEventT], event: MouseEvent) -> MouseEventT:
-        new_event = cls(
+        return cls(
             event.sender,
             event.x,
             event.y,
@@ -277,7 +276,6 @@ class MouseEvent(InputEvent, bubble=True):
             event.screen_y,
             event._style,
         )
-        return new_event
 
     def __rich_repr__(self) -> rich.repr.Result:
         yield "x", self.x
